@@ -2,7 +2,11 @@
 % Please edit documentation in R/impute4mmv.R
 \name{impute4mmv}
 \alias{impute4mmv}
-\title{Impute Missing Values for Multinomial Data}
+\title{Impute Missing Values for Multinomial Data
+
+This function imputes missing values in categorical data using either
+Expectation-Maximization (EM) or Dirichlet Allocation (DA) methods.
+It utilizes prior distributions for the imputation process.}
 \usage{
 impute4mmv(
   dat,
@@ -13,31 +17,52 @@ impute4mmv(
 }
 \arguments{
 \item{dat}{A data.table or data frame containing the data with missing values.
-All columns should be factors.}
+All columns should be factors. If any column is not a factor,
+it will be converted to a factor.}
 
 \item{method}{A character string specifying the imputation method.
-Options include "EM" for Expectation-Maximization and "DA" for Dirichlet Allocation.}
+       Options include:
+- "EM": Expectation-Maximization method.
+- "DA": Dirichlet Allocation method.}
 
 \item{conj_prior}{A character string specifying the type of prior to use.
-Options include "none", "data.dep", "flat.prior", and "non.informative".}
+           Options include:
+- "none": No prior distribution.
+- "data.dep": Data-dependent prior.
+- "flat.prior": A flat prior.
+- "non.informative": A non-informative Jeffrey's prior.}
 
-\item{alpha}{A numeric vector specifying the prior parameters. Required if
-`conj_prior` is "flat.prior".}
+\item{alpha}{A numeric vector specifying the prior parameters.
+Required if `conj_prior` is "flat.prior".
+If not specified for other priors, the function will handle it accordingly.}
 }
 \value{
 An object of class `imputeMulti` containing:
-\item{Gcall}{The call to the function.}
-\item{method}{The method used for imputation.}
+\item{Gcall}{The call to the function, stored as a language object.}
+\item{method}{The method used for imputation, either "EM" or "DA".}
 \item{mle_call}{The call used for maximum likelihood estimation.}
-\item{mle_iter}{The number of iterations in MLE.}
-\item{mle_log_lik}{Log-likelihood of the fitted model.}
-\item{mle_cp}{Conjugate prior used.}
-\item{mle_x_y}{Estimated parameters for the multinomial distribution.}
-\item{data}{A list containing the original missing data and the imputed data.}
-\item{nmiss}{The number of missing observations.}
+\item{mle_iter}{The number of iterations performed during the MLE process.}
+\item{mle_log_lik}{The log-likelihood of the fitted model.}
+\item{mle_cp}{The conjugate prior used in the imputation process.}
+\item{mle_x_y}{The estimated parameters for the multinomial distribution,
+               which are used for imputation.}
+\item{data}{A list containing two elements:
+  - `missing_data`: A data.table with the missing values.
+  - `imputed_data`: A data.table with the missing values imputed.}
+\item{nmiss}{The number of missing observations in the dataset.}
 }
 \description{
+Impute Missing Values for Multinomial Data
+
 This function imputes missing values in categorical data using either
 Expectation-Maximization (EM) or Dirichlet Allocation (DA) methods.
 It utilizes prior distributions for the imputation process.
+}
+\examples{
+# Example usage
+#' data("tract2221")
+dat <- tract2221[,c(1:2,4,7,9)]
+imputed_result <- impute4mmv(dat, method = "EM", conj_prior = "non.informative")
+
+imputed_result <- impute4mmv(dat, method = "DA", conj_prior = "non.informative")
 }

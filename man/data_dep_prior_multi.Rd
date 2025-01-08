@@ -7,7 +7,7 @@
 data_dep_prior_multi(dat)
 }
 \arguments{
-\item{dat}{}
+\item{dat}{dataset}
 }
 \value{
 The original data will have one more column at the end, which is the parameter of the prior distribution.

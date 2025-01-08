@@ -2,7 +2,7 @@
 % Please edit documentation in R/EM.R
 \name{EM_multinomial}
 \alias{EM_multinomial}
-\title{Expectation-Maximization Algorithm for Multinomial Data}
+\title{Expectation-Maximization for Multinomial Data with Missing Values}
 \usage{
 EM_multinomial(
   dat,
@@ -14,30 +14,45 @@ EM_multinomial(
 }
 \arguments{
 \item{dat}{A data frame containing the data with missing values. All columns
-should be factors.}
+must be factors. Missing values are handled by the algorithm.}
 
 \item{conj_prior}{A character string specifying the type of prior to use.
-Options include "none", "data.dep", "flat.prior", and "non.informative".}
+           Options include:
+- "none": No prior distribution is used.
+- "data.dep": Data-dependent prior.
+- "flat.prior": A flat prior is used.
+- "non.informative": A non-informative Jeffrey's prior.}
 
 \item{alpha}{A numeric vector specifying the prior parameters. Required if
-`conj_prior` is "data.dep" or "flat.prior".}
+`conj_prior` is "data.dep" or "flat.prior". It represents the
+parameters of the prior distribution.}
 
 \item{tol}{A numeric value indicating the convergence tolerance. Default is
-5e-7.}
+5e-7. The algorithm terminates when the change in parameters is
+smaller than this threshold.}
 
-\item{max_iter}{An integer specifying the maximum number of iterations.
-Default is 10000.}
+\item{max_iter}{An integer specifying the maximum number of iterations. Default
+is 10000. The algorithm will stop if this number of iterations
+is reached without converging.}
 }
 \value{
 An object of class `mod_imputeMulti` containing:
-\item{method}{The method used for imputation.}
-\item{mle_call}{The call that produced the model.}
-\item{mle_iter}{The number of iterations run.}
+\item{method}{The method used for imputation, which is always "EM".}
+\item{mle_call}{The call to the function that generated the model.}
+\item{mle_iter}{The number of iterations performed during the EM algorithm.}
 \item{mle_log_lik}{The log-likelihood of the fitted model.}
-\item{mle_cp}{The conjugate prior used.}
-\item{mle_x_y}{A data frame with estimated parameters and counts.}
+\item{mle_cp}{The conjugate prior used in the model.}
+\item{mle_x_y}{A data frame containing the estimated parameters and counts,
+               including the updated parameter estimates and sufficient statistics.}
 }
 \description{
 This function implements the Expectation-Maximization (EM) algorithm to
-estimate parameters for multinomial data with missing values.
+estimate the parameters for multinomial data with missing values. It performs
+both the E-step (Expectation) and M-step (Maximization) iteratively until convergence.
+}
+\examples{
+# Example usage:
+data("tract2221")
+dat <- tract2221[,c(1:2,4,7,9)]
+result <- EM_multinomial(dat, conj_prior = "non.informative")
 }

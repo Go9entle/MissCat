@@ -2,7 +2,7 @@
 % Please edit documentation in R/DA.R
 \name{DA_multinomial}
 \alias{DA_multinomial}
-\title{Dirichlet Allocation for Multinomial Data}
+\title{Data-Augmentation for Multinomial Data with Missing Values}
 \usage{
 DA_multinomial(
   dat,
@@ -14,26 +14,45 @@ DA_multinomial(
 }
 \arguments{
 \item{dat}{A data frame containing the data with missing values. All columns
-should be factors.}
+should be factors. The missing values are assumed to be missing at random (MAR).}
 
-\item{conj_prior}{A character string specifying the type of prior to use.
-Options include "none", "data.dep", "flat.prior", and "non.informative".}
+\item{conj_prior}{A character string specifying the type of prior to use for the Dirichlet distribution.
+           Options include:
+- "none": No prior distribution is used (non-informative).
+- "data.dep": Data-dependent prior.
+- "flat.prior": A flat (uniform) prior is used.
+- "non.informative": A non-informative Jeffrey's prior.}
 
 \item{alpha}{A numeric vector specifying the prior parameters. Required if
-`conj_prior` is "data.dep" or "flat.prior".}
+`conj_prior` is "data.dep" or "flat.prior". Represents the
+parameters of the Dirichlet prior distribution.}
 
-\item{burnin}{An integer specifying the number of burn-in iterations. Default is 100.}
+\item{burnin}{An integer specifying the number of burn-in iterations. Default is 100.
+These iterations are used to stabilize the parameter estimates before sampling.}
 
-\item{post_draws}{An integer specifying the number of posterior draws. Default is 10000.}
+\item{post_draws}{An integer specifying the number of posterior draws. Default is 10000.
+These draws are used to estimate the parameters of the multinomial distribution.}
 }
 \value{
-An object containing:
-\item{theta_y}{Estimated parameters for the multinomial distribution.}
-\item{log_lik}{Log-likelihood of the fitted model.}
-\item{counts}{Counts of the observed patterns.}
-\item{alpha}{Prior parameters used in the model.}
+An object of class `mod_imputeMulti` containing:
+\item{theta_y}{Estimated parameters for the multinomial distribution, obtained through posterior draws.}
+\item{log_lik}{The log-likelihood of the fitted model based on the posterior draws.}
+\item{counts}{Counts of the observed patterns in the dataset, used in the likelihood calculation.}
+\item{alpha}{Prior parameters used in the model, if applicable.}
 }
 \description{
-This function implements a Dirichlet Allocation model for handling
-multinomial data with missing values using a Bayesian approach.
+This function implements a Data Augmentation (DA) model for handling multinomial
+data with missing values using a Bayesian approach. The method applies an
+Iterative Markov Chain Monte Carlo (MCMC) algorithm to estimate the parameters
+of a multinomial distribution with Dirichlet priors. The model proceeds with
+an initial iteration step (I-step) followed by the maximization step (M-step)
+and continues until a specified number of burn-in iterations. Afterward, the model
+performs posterior draws to estimate the parameters of the multinomial distribution.
+}
+\examples{
+# Example usage:
+data("tract2221")
+dat <- tract2221[,c(1:2,4,7,9)]
+result <- DA_multinomial(dat, conj_prior = "non.informative",
+                         burnin = 100, post_draws = 10000)
 }

@@ -2,16 +2,30 @@
 % Please edit documentation in R/factor2int.R
 \name{fact_to_int}
 \alias{fact_to_int}
-\title{Convert the factor levels of categorical variables to positive integers.}
+\title{Convert Factor Levels to Positive Integers}
 \usage{
 fact_to_int(f)
 }
 \arguments{
-\item{f}{A column of factor variables}
+\item{f}{A factor variable (or a column of factors) to be converted. If `f` is not a factor, it is returned unchanged.}
 }
 \value{
-Factor levels converted to a column of positive integers.
+A numeric vector where each factor level is replaced by its corresponding integer position.
+        Missing values (NA) are retained as NA.
 }
 \description{
-Convert the factor levels of categorical variables to positive integers.
+This function converts the levels of a factor variable to corresponding positive integers.
+Each level of the factor is mapped to its integer position in the factor's levels.
+}
+\details{
+This function is useful for converting categorical variables (factors) into numeric representations
+when such transformation is required, for instance, in statistical or machine learning models that
+need numeric inputs. It returns a numeric vector, where the factor levels are replaced with their
+integer codes (starting from 1 for the first level).
+}
+\examples{
+# Example usage:
+factor_var <- factor(c("Low", "Medium", "High", "Low"))
+fact_to_int(factor_var)
+# Returns: [1, 2, 3, 1]
 }

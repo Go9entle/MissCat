@@ -2,16 +2,16 @@
 % Please edit documentation in R/isClass2.R
 \name{is.imputeMulti}
 \alias{is.imputeMulti}
-\title{Function that checks if the target object is a \code{mod_imputeMulti} object.}
+\title{Check if the target object is a \code{imputeMulti} object}
 \usage{
 is.imputeMulti(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{The object to be checked.}
 }
 \value{
-TRUE OR FALSE
+A logical value: \code{TRUE} if \code{x} is an \code{imputeMulti} object, \code{FALSE} otherwise.
 }
 \description{
-Function that checks if the target object is a \code{mod_imputeMulti} object.
+This function checks whether the provided object is of class \code{imputeMulti}.
 }

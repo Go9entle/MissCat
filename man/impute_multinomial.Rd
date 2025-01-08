@@ -2,7 +2,10 @@
 % Please edit documentation in R/impute1.R
 \name{impute_multinomial}
 \alias{impute_multinomial}
-\title{Impute Missing Values in Multinomial Data}
+\title{Impute Missing Values in Multinomial Data
+
+This function imputes missing values in a single row of multinomial data using
+maximum likelihood estimates based on the provided `MLEx_y` data.}
 \usage{
 impute_multinomial(miss_val, row_ind, MLEx_y)
 }
@@ -17,6 +20,8 @@ impute_multinomial(miss_val, row_ind, MLEx_y)
 A data frame with missing values imputed.
 }
 \description{
+Impute Missing Values in Multinomial Data
+
 This function imputes missing values in a single row of multinomial data using
 maximum likelihood estimates based on the provided `MLEx_y` data.
 }

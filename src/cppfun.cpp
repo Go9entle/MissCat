@@ -6,21 +6,12 @@
 using namespace Rcpp;
 
 
-
-//' @title Match Rows Between Two DataFrames with Missing Data
- //' @description For each row in `z`, find matching rows in `x` after removing columns
- //' where `z` has missing values (NA).
- //' @param z A DataFrame containing missing data. Rows in `z` may have NA values.
- //' @param x A DataFrame without missing data. Rows in `x` are compared to `z`.
- //' @return A List where each element contains the indices of matching rows in `x` for each row in `z`.
- //' @export
- // [[Rcpp::export]]
- 
- List match_rows(DataFrame z, DataFrame x) {//这个函数是生成list search那个!
+// [[Rcpp::export(match_rows)]]
+List match_rows(DataFrame z, DataFrame x) {//这个函数是生成list search那个!
    int nrow_z = z.nrow(); // z_Os_y的行数
    int nrow_x = x.nrow(); // x_possible的行数
    int ncol = z.ncol();   // z_的列数=x_的列数
-   
+
    // 确保每列名称相同,列数相等
    //if (z.names() != x.names()) {
    //  stop("Column names of z and x must match.");
@@ -28,10 +19,10 @@ using namespace Rcpp;
    if (z.ncol() != x.ncol()) {
      stop("z and x must have the same number of columns.");
    }
-   
+
    // 创建一个列表用于存放最终的结果
    List result(nrow_z);
-   
+
    // 首先对z的每行迭代
    for (int i = 0; i < nrow_z; i++) {
      // Extract the current row of z
@@ -40,8 +31,8 @@ using namespace Rcpp;
        CharacterVector z_col = z[col];
        row_z[col] = z_col[i];
      }
-     
-     
+
+
      // 找到不存在NA的列,称之为有效列
      std::vector<int> valid_cols;
      for (int col = 0; col < ncol; col++) { //第i行,对第col列查其是否为NA
@@ -49,13 +40,13 @@ using namespace Rcpp;
          valid_cols.push_back(col);
        }
      }
-     
+
      // If all columns are NA, no comparison can be made
      if (valid_cols.empty()) {
        result[i] = IntegerVector::create(); // Empty result
        continue;
      }
-     
+
      // 找匹配
      std::vector<int> matches;
      for (int j = 0; j < nrow_x; j++) {
@@ -72,11 +63,11 @@ using namespace Rcpp;
          matches.push_back(j + 1); // R 索引从 1 开始
        }
      }
-     
+
      // Store the matching indices
      result[i] = matches;
    }
-   
+
    return result;
  }
 
@@ -101,18 +92,18 @@ std::string row_to_string(const DataFrame& df, int row) {
   return oss.str();
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(merge_duplicate_rows_large)]]
 DataFrame merge_duplicate_rows_large(DataFrame df) {
   int nrow = df.nrows();
   int ncol = df.size();
-  
+
   // HashMap to store unique rows and their counts
   std::unordered_map<std::string, std::pair<std::vector<double>, int>> row_map;
-  
+
   for (int i = 0; i < nrow; ++i) {
     // Convert row to hashable string
     std::string key = row_to_string(df, i);
-    
+
     // Check if the row already exists in the map
     if (row_map.find(key) == row_map.end()) {
       // If new, add row data and initialize count to 1
@@ -127,13 +118,13 @@ DataFrame merge_duplicate_rows_large(DataFrame df) {
       row_map[key].second++;
     }
   }
-  
+
   // Create result DataFrame
   int unique_rows = row_map.size();
   NumericMatrix result(unique_rows, ncol + 1);
   CharacterVector col_names = clone<CharacterVector>(df.names());
   col_names.push_back("counts");
-  
+
   int idx = 0;
   for (const auto& entry : row_map) {
     // Copy row data
@@ -144,7 +135,7 @@ DataFrame merge_duplicate_rows_large(DataFrame df) {
     result(idx, ncol) = entry.second.second;
     idx++;
   }
-  
+
   // Convert to DataFrame and set column names
   DataFrame result_df = as<DataFrame>(result);
   result_df.attr("names") = col_names;
@@ -169,27 +160,27 @@ std::string row_to_string2(const DataFrame& df, int row, int ncol) {
   return oss.str();
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(match_rows_and_add_rowname)]]
 DataFrame match_rows_and_add_rowname(DataFrame A, DataFrame B) {
   int nrowA = A.nrows();
   int ncolA = A.size() - 1; // Exclude the last column for matching,这里是5
   int nrowB = B.nrows();
   int ncolB = B.size();
-  
+
   if (ncolA > ncolB) {
     stop("DataFrame A (excluding last column) has more columns than DataFrame B. Matching is not possible.");
   }
-  
+
   // Step 1: Create a temporary DataFrame tmpA without the last column of A
   DataFrame tmpA = A[Range(0, ncolA - 1)];//tmpA是前五列,没毛病
-  
+
   // Step 2: Build a hash map for DataFrame B
   std::unordered_map<std::string, int> row_to_index_map;
   for (int i = 0; i < nrowB; ++i) {
     std::string key = row_to_string2(B, i, ncolA); // Use only first `ncolA` columns of B前五列 没毛病啊
     row_to_index_map[key] = i + 1; // Store 1-based row index 存储到B的行号
   }
-  
+
   // Step 3: Find matches for DataFrame tmpA in B
   IntegerVector row_names(nrowA, NA_INTEGER); // Default to NA if no match is found
   for (int i = 0; i < nrowA; ++i) {
@@ -199,11 +190,11 @@ DataFrame match_rows_and_add_rowname(DataFrame A, DataFrame B) {
       row_names[i] = it->second; // Assign corresponding row index from B
     }
   }
-  
+
   // Step 4: Add row names to original DataFrame A and return
   A.attr("row.names") = row_names; // Assign row names based on B's indices
-  
-  
+
+
   return A;
 }
 
@@ -213,10 +204,10 @@ DataFrame match_rows_and_add_rowname(DataFrame A, DataFrame B) {
  //' @param x A numeric \code{vector}
  //' @param y A numeric \code{vector}
  //' @return a numeric scalar.
- // [[Rcpp::export]]
+ // [[Rcpp::export(supDist)]]
  double supDist (const NumericVector& x, const NumericVector& y) {
    int nx = x.size();
-   
+
    double sup = -1.0;
    for (int i = 0; i < nx; i++) {
      if (abs(x[i] - y[i]) > sup) sup = abs(x[i] - y[i]);
@@ -226,17 +217,17 @@ DataFrame match_rows_and_add_rowname(DataFrame A, DataFrame B) {
 
 
 
-// [[Rcpp::export]]
+// [[Rcpp::export(count_compare)]]
 IntegerVector count_compare (IntegerMatrix& x, IntegerMatrix& dat, const std::string& hasNA) {
-  
+
   int nr_x = x.nrow(), nr_dat = dat.nrow(), nc_x = x.ncol();
   IntegerVector out(nr_x, 0);
-  
+
   // Basic strategy: Loop through dat to find match in x. Each j in J has 1 match i in I
   // Once match is found, break and j++
   // match criteria differs by hasNA.
   // many to one matching (many dat.row(j) may match one x.row(i))
-  
+
   if (hasNA == "no") {
     for (int j = 0; j < nr_dat; j++) {
       for (int i = 0; i < nr_x; i++) {

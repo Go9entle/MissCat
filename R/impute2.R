@@ -1,4 +1,4 @@
-#' Impute Missing Values Across All Rows in Multinomial Data
+#' @title Impute Missing Values Across All Rows in Multinomial Data
 #'
 #' This function imputes missing values for all rows in a dataset using the
 #' `impute_multinomial` function based on the provided `MLEx_y` data.

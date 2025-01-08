@@ -2,18 +2,20 @@
 #' @description Creates a data-dependent prior for a p-dimensional multinomial distribution. Only referenced if conj_prior is specified.
 #' Use a conjugate prior based on 20% of the data (e.g. \eqn{Dirichlet(\alpha)}).
 #'
-#' @param dat
-#'
+#' @param dat dataset
+#' @importFrom Rcpp sourceCpp
+#' @useDynLib MissCat
 #' @return The original data will have one more column at the end, which is the parameter of the prior distribution.
 #' @export
 #'
-#' @examples
 data_dep_prior_multi <- function(dat) {
   data.table::setDT(dat)
   if (!all(unlist(lapply(dat, is.factor)))) {
     # enforce factor variables
     dat <- dat[, lapply(.SD, as.factor)]
   }
+  dat_comp <- dat[stats::complete.cases(dat),] # Complete data
+  dat_miss <- dat[!stats::complete.cases(dat),] # Missing data
   dat_int <-  do.call("cbind",lapply(dat,fact_to_int))
   dat_comp_int<- do.call("cbind",lapply(dat_comp,fact_to_int))
   enum_comp1 <- expand.grid(sapply(dat, levels)) #记住此!原代码中这里定义成了enum导致一系列分析错误

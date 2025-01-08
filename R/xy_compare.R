@@ -1,14 +1,44 @@
-#' @describeIn Compares two 2D arrays (\code{mat_x}, \code{mat_y}), where \code{mat_x} allows missing values. Returns a \code{list} of length \code{nrow(mat_x)} where each list element contains a vector of row indices from \code{mat_y} and the row equivalence of the non-missing values.
+#' @title Compare Rows of Two Data Tables
+#' @description Compares each row of `DT_x` with `DT_y`, returning the indices of matching rows in `DT_y`.
 #'
-#' @param DT_x
-#' @param DT_y
+#' This function compares two data.tables, `DT_x` and `DT_y`, and returns a list where each element contains
+#' the row indices from `DT_y` that match the corresponding row in `DT_x`. It handles missing values in `DT_x`
+#' by excluding columns with missing values during the comparison.
 #'
-#' @return A list with the same number of rows as \code{DT_x}, each row containing the row indices where \code{DT_y} can be paired with \code{DT_x}.
-#' @export
+#' @param DT_x A data.table representing the first dataset to compare.
+#' @param DT_y A data.table representing the second dataset to compare with.
 #'
+#' @return A list of length equal to the number of rows in `DT_x`. Each element of the list contains
+#'         the row indices from `DT_y` that match the corresponding row in `DT_x`.
+#'         If a row in `DT_x` contains missing values, the function compares only the non-missing values.
+#' @importFrom Rcpp sourceCpp
+#' @useDynLib MissCat
 #' @examples
+#' library(data.table)
+#'
+#' # Create example data.tables
+#' DT_x <- data.table(A = c("a", "b", NA), B = c(1, 2, 3))
+#' DT_y <- data.table(A = c("a", "b", "c"), B = c(1, 2, 4))
+#'
+#' # Compare rows
+#' result <- mx_my_compare(DT_x, DT_y)
+#' print(result)
+#'
+#' # Expected output:
+#' # [[1]]
+#' # [1] 1
+#' #
+#' # [[2]]
+#' # [1] 2
+#' #
+#' # [[3]]
+#' # integer(0)  # No matches due to NA in DT_x
+#'
+#' @export
+
 mx_my_compare <- function(DT_x, DT_y) {
   if (ncol(DT_x) != ncol(DT_y)) stop("ncol of DT_x and DT_y do not match.")
+
   ## 0. Pre-processing: convert factors to integers
   data.table::setDT(DT_x); data.table::setDT(DT_y)
   res <- vector("list", length= nrow(DT_x))

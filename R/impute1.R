@@ -1,4 +1,4 @@
-#' Impute Missing Values in Multinomial Data
+#' @title Impute Missing Values in Multinomial Data
 #'
 #' This function imputes missing values in a single row of multinomial data using
 #' maximum likelihood estimates based on the provided `MLEx_y` data.

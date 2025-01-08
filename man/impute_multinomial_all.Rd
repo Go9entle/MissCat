@@ -2,7 +2,10 @@
 % Please edit documentation in R/impute2.R
 \name{impute_multinomial_all}
 \alias{impute_multinomial_all}
-\title{Impute Missing Values Across All Rows in Multinomial Data}
+\title{Impute Missing Values Across All Rows in Multinomial Data
+
+This function imputes missing values for all rows in a dataset using the
+`impute_multinomial` function based on the provided `MLEx_y` data.}
 \usage{
 impute_multinomial_all(dat_miss, MLEx_y, p)
 }
@@ -17,6 +20,8 @@ impute_multinomial_all(dat_miss, MLEx_y, p)
 A data frame with all missing values imputed.
 }
 \description{
+Impute Missing Values Across All Rows in Multinomial Data
+
 This function imputes missing values for all rows in a dataset using the
 `impute_multinomial` function based on the provided `MLEx_y` data.
 }

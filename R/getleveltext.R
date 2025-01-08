@@ -6,7 +6,6 @@
 #' @return Text form of factor levels for categorical variables.
 #' @export
 #'
-#' @examples
 get_level_text <- function(var, val) {
   lvls <- levels(var)
   return(lvls[val])

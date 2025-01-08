@@ -3,29 +3,43 @@
 \docType{class}
 \name{imputeMulti-class}
 \alias{imputeMulti-class}
-\title{Make A Class}
+\title{Define Class for Multiple Imputation Model with Additional Information}
+\value{
+An S4 object of class `imputeMulti`, which extends the `mod_imputeMulti` class and contains
+        the information stored in the defined slots.
+}
 \description{
-Make A Class
+This function defines an S4 class `imputeMulti` that extends the `mod_imputeMulti` class,
+adding additional slots to store more detailed information about the multiple imputation model.
+The class includes slots for the call used to fit the model, the method, the number of iterations,
+log-likelihood, conjugate prior type, parameter estimates, imputation data, and the number of missing values.
+}
+\details{
+The `imputeMulti` class is designed for multiple imputation models with enhanced functionality.
+It extends the `mod_imputeMulti` class by adding additional slots to store the call used to create the
+imputation, the imputation method, and details about the data, such as the number of missing values.
+This allows users to keep track of all relevant model information, including the missing data pattern,
+during the imputation process.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{Gcall}}{call.}
+\item{\code{Gcall}}{A call object representing the original call used to invoke the imputation model.}
 
-\item{\code{method}}{character.}
+\item{\code{method}}{A character string specifying the method used for imputation (e.g., "EM", "DA").}
 
-\item{\code{mle_call}}{call.}
+\item{\code{mle_call}}{A call object for the model fitting process.}
 
-\item{\code{mle_iter}}{numeric.}
+\item{\code{mle_iter}}{A numeric value indicating the number of iterations performed in the model fitting process.}
 
-\item{\code{mle_log_lik}}{numeric.}
+\item{\code{mle_log_lik}}{A numeric value representing the log-likelihood of the fitted model.}
 
-\item{\code{mle_cp}}{character.}
+\item{\code{mle_cp}}{A character string specifying the conjugate prior used in the model.}
 
-\item{\code{mle_x_y}}{data.frame.}
+\item{\code{mle_x_y}}{A data frame containing the model's parameter estimates and counts.}
 
-\item{\code{data}}{list.}
+\item{\code{data}}{A list containing the input data used for imputation, which can include observed and missing values.}
 
-\item{\code{nmiss}}{numeric.}
+\item{\code{nmiss}}{A numeric value indicating the number of missing values in the data.}
 }}
 
