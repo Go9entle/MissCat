@@ -1,6 +1,5 @@
 #' @title Impute Missing Values for Multinomial Data
-#'
-#' This function imputes missing values in categorical data using either
+#' @description This function imputes missing values in categorical data using either
 #' Expectation-Maximization (EM) or Dirichlet Allocation (DA) methods.
 #' It utilizes prior distributions for the imputation process.
 #'
@@ -52,6 +51,7 @@ impute5mmv <- function(dat, method = c("EM", "DA"),
                        conj_prior = c("none", "data.dep", "flat.prior", "non.informative"),
                        alpha = NULL){
   set.seed(2024) # Set random seed for reproducibility
+  # library(data.table)
   data.table::setDT(dat) # Convert data to data.table format if not already
 
   # Ensure all columns in `dat` are factors, convert them if necessary

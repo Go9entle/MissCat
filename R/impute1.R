@@ -1,6 +1,5 @@
 #' @title Impute Missing Values in Multinomial Data
-#'
-#' This function imputes missing values in a single row of multinomial data using
+#' @description This function imputes missing values in a single row of multinomial data using
 #' maximum likelihood estimates based on the provided `MLEx_y` data.
 #'
 #' @param miss_val A data frame or vector containing missing values to be imputed.

@@ -20,6 +20,43 @@ To install the `MissCat` package, you can use the following code:
 devtools::install_github("go9entle/MissCat")
 ```
 
+> [!Warning]
+>
+> If you get the following error
+>
+> ```R
+> > devtools::install_github("go9entle/MissCat")
+> Using GitHub PAT from the git credential store.
+> 错误: Failed to install 'MissCat' from GitHub:
+>   HTTP error 401.
+>   Bad credentials
+> 
+>   Rate limit remaining: 59/60
+>   Rate limit reset at: 2025-01-12 04:03:15 UTC
+> ```
+>
+> Go to [Github/settings/tokens](https://github.com/settings/tokens)
+> Click "Generate new token." (classic probably the best)
+> Select the appropriate scopes for your use case. For installing packages, the following scopes are usually enough:
+>
+> ```github
+> repo
+> read:packages
+> ```
+>
+> Click "Generate token."
+> Copy the token, as you'll need it soon.
+>
+> Set up the PAT in R:
+>
+> Open R and run the following commands to set the new token:
+>
+> ```R
+> gitcreds::gitcreds_set()
+> ```
+>
+> This will prompt you to enter a new credential. Paste your newly generated PAT when prompted.
+
 
 
 ## Example Data

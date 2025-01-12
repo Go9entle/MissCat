@@ -2,15 +2,7 @@
 % Please edit documentation in R/impute5mmv.R
 \name{impute5mmv}
 \alias{impute5mmv}
-\title{Impute Missing Values for Multinomial Data
-
-This function imputes missing values in categorical data using either
-Expectation-Maximization (EM) or Dirichlet Allocation (DA) methods.
-It utilizes prior distributions for the imputation process.
-
-The difference between this function and the impute4mmv function
-is that this function focuses on not changing the order of the interpolation results,
-and can be used to compare the accuracy with other functions.}
+\title{Impute Missing Values for Multinomial Data}
 \usage{
 impute5mmv(
   dat,
@@ -56,8 +48,6 @@ An object of class `imputeMulti` containing:
 \item{nmiss}{The number of missing observations in the dataset.}
 }
 \description{
-Impute Missing Values for Multinomial Data
-
 This function imputes missing values in categorical data using either
 Expectation-Maximization (EM) or Dirichlet Allocation (DA) methods.
 It utilizes prior distributions for the imputation process.

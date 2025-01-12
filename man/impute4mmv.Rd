@@ -2,11 +2,7 @@
 % Please edit documentation in R/impute4mmv.R
 \name{impute4mmv}
 \alias{impute4mmv}
-\title{Impute Missing Values for Multinomial Data
-
-This function imputes missing values in categorical data using either
-Expectation-Maximization (EM) or Dirichlet Allocation (DA) methods.
-It utilizes prior distributions for the imputation process.}
+\title{Impute Missing Values for Multinomial Data}
 \usage{
 impute4mmv(
   dat,
@@ -52,8 +48,6 @@ An object of class `imputeMulti` containing:
 \item{nmiss}{The number of missing observations in the dataset.}
 }
 \description{
-Impute Missing Values for Multinomial Data
-
 This function imputes missing values in categorical data using either
 Expectation-Maximization (EM) or Dirichlet Allocation (DA) methods.
 It utilizes prior distributions for the imputation process.

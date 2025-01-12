@@ -1,6 +1,6 @@
 Package: MissCat
 Title: Imputation of missing values for categorical variables following a multinomial distribution
-Version: 0.0.0.2
+Version: 0.2025.1.12
 Authors@R: c(
     person("Zhentao", "Guo", email = "gzt0912@foxmail.com", role =  c("aut", "cre")),
     person("Yanhong", "Zhong", email = "zhongyanhong@ruc.edu.cn", role = "aut"),
