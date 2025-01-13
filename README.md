@@ -17,7 +17,7 @@ MissCat provides tools to impute missing data in categorical datasets using both
 To install the `MissCat` package, you can use the following code:
 
 ```R
-devtools::install_github("go9entle/MissCat")
+devtools::install_github("Go9entle/MissCat")
 ```
 
 > [!Warning]

@@ -10,7 +10,7 @@ Description: Implements Imputation of missing values for categorical variables
     following a multinomial distribution using EM ＆ Data Augmentation 
     building upon Schafer's work (1997) <ISBN: 978-0-412-04061-0>.
 Depends:
-    R (>= 4.0),
+    R (>= 4.3.2),
 Imports:
     gtools (>= 3.3),
     methods,
